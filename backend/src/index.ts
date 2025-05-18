@@ -23,7 +23,12 @@ wss.on("connection", (socket) => {
       allSockets.forEach(
         (allSocket) =>
           currentUserRoom?.room === allSocket.room &&
-          allSocket.socket.send(parsedMessage.payload.message)
+          allSocket.socket.send(
+            JSON.stringify({
+              message: parsedMessage.payload.message,
+              type: socket === allSocket.socket ? "sender" : "receiver",
+            })
+          )
       );
     }
   });
