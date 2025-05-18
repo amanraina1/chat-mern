@@ -22,7 +22,7 @@ wss.on("connection", (socket) => {
       const currentUserRoom = allSockets.find((x) => x.socket === socket);
       allSockets.forEach(
         (allSocket) =>
-          currentUserRoom?.room === parsedMessage.payload.room &&
+          currentUserRoom?.room === allSocket.room &&
           allSocket.socket.send(parsedMessage.payload.message)
       );
     }
