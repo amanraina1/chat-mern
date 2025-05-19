@@ -22,8 +22,7 @@ function App() {
     };
 
     ws.onmessage = (event) => {
-      console.log(event.data);
-      setMessages((prev) => [...prev, event.data]);
+      setMessages((prev) => [...prev, JSON.parse(event.data)]);
     };
   }, []);
 
@@ -48,9 +47,13 @@ function App() {
           <span>Users: 2/2</span>
         </div>
         <div className="card-body">
-          {messages.map((message) => (
-            <div key={message}>{message}</div>
-          ))}
+          <div className="body-text">
+            {messages.map((msg) => (
+              <div className={msg.type} key={msg?.message}>
+                {msg?.message}
+              </div>
+            ))}
+          </div>
         </div>
 
         <div className="card-footer">

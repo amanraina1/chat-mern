@@ -47,7 +47,7 @@ body {
   display: flex;
   flex-direction: column;
   padding: 20px;
-  align-items: flex-end;
+
   justify-content: flex-end;
   height: 80%;
   border: 1px solid rgba(255, 255, 255, 0.4);
@@ -82,9 +82,27 @@ body {
   border-radius: 10px;
 }
 
-.card-body div {
+.body-text div.receiver {
+  display: flex;
+  justify-self: flex-start;
+}
+
+.body-text div.sender {
+  display: flex;
+  justify-self: flex-end;
+}
+
+.card-body div.sender {
   background-color: #fff;
   color: black;
+  padding: 10px;
+  border-radius: 10px;
+  margin: 10px;
+}
+
+.card-body div.receiver {
+  background-color: #050505;
+  color: rgb(255, 255, 255);
   padding: 10px;
   border-radius: 10px;
   margin: 10px;
