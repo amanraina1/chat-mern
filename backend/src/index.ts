@@ -1,5 +1,4 @@
 import { WebSocketServer, WebSocket } from "ws";
-
 const wss = new WebSocketServer({ port: 8080 });
 
 interface User {
@@ -16,6 +15,28 @@ wss.on("connection", (socket) => {
 
     if (parsedMessage.type === "join") {
       allSockets.push({ socket, room: parsedMessage.payload.room });
+
+      // when some user connects update, the active users count
+      let count = 0;
+      allSockets.forEach((allSocket) => {
+        if (allSocket.room === parsedMessage.payload.room) {
+          count += 1;
+        }
+      });
+
+      allSockets.forEach(
+        (allSocket) =>
+          allSocket.room === parsedMessage.payload.room &&
+          allSocket.socket.send(
+            JSON.stringify({
+              type: "info",
+              info: {
+                room: parsedMessage.payload.room,
+                count,
+              },
+            })
+          )
+      );
     }
 
     if (parsedMessage.type === "chat") {
@@ -26,6 +47,7 @@ wss.on("connection", (socket) => {
           allSocket.socket.send(
             JSON.stringify({
               message: parsedMessage.payload.message,
+              //this is to check if the message is for receiver or sender to apply styles
               type: socket === allSocket.socket ? "sender" : "receiver",
             })
           )
@@ -34,6 +56,33 @@ wss.on("connection", (socket) => {
   });
 
   socket.on("close", () => {
+    //update the active users count on frontend
+    const currSocket = allSockets.find(
+      (allSocket) => allSocket.socket === socket
+    );
+    // filter out the socket which is just disconnected
     allSockets = allSockets.filter((allSocket) => allSocket.socket !== socket);
+
+    //update the active users count on frontend
+    let count = 0;
+    allSockets.forEach((allSocket) => {
+      if (allSocket.room === currSocket?.room) {
+        count += 1;
+      }
+    });
+
+    allSockets.forEach(
+      (allSocket) =>
+        allSocket.room === currSocket?.room &&
+        allSocket.socket.send(
+          JSON.stringify({
+            type: "info",
+            info: {
+              room: currSocket?.room,
+              count,
+            },
+          })
+        )
+    );
   });
 });
