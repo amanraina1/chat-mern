@@ -17,6 +17,7 @@ body {
 }
 .card {
   height: 80vh;
+  width: 35vw;
   padding: 20px;
   border: 1px solid rgba(255, 255, 255, 0.3);
   border-radius: 10px;
@@ -90,11 +91,17 @@ body {
 .body-text div.receiver {
   display: flex;
   justify-self: flex-start;
+  max-width: 50%;
+  flex-wrap: wrap;
+  word-break: break-all;
 }
 
 .body-text div.sender {
   display: flex;
   justify-self: flex-end;
+  max-width: 50%;
+  flex-wrap: wrap;
+  word-break: break-all;
 }
 
 .card-body div.sender {
